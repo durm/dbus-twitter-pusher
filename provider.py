@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
  
 import gobject
@@ -6,6 +7,7 @@ import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
 import tweepy
 from macroses import BUSNAME, OBJNAME
+import sys
 
 class TwitterPoster(dbus.service.Object):
     def __init__(self, consumer_key, consumer_secret, access_token_key, access_token_secret):
@@ -20,15 +22,21 @@ class TwitterPoster(dbus.service.Object):
         self.api.update_status(status=status)
         print "Update status with:", status
 
-if __name__ == "__main__":
-    import sys
+def usage():
+    print("Use it like this:")
+    print("{0} CONSUMER_KEY CONSUMER_SECRET ACCESS_TOKEN_KEY ACCESS_TOKEN_SECRET".format(sys.argv[0]))
 
+if __name__ == "__main__":
     DBusGMainLoop(set_as_default = True)
     mainloop = gobject.MainLoop()
-    twitter_poster = TwitterPoster(*sys.argv[1:])
+    try:
+        twitter_poster = TwitterPoster(*sys.argv[1:])
+    except:
+        usage()
+        sys.exit(1)
     try:
         print (">>> TwitterPoster started...")
         mainloop.run()
     except KeyboardInterrupt:
-        print (">>> TwitterPoster stoped!")
+        print ("\n>>> TwitterPoster stoped!")
         sys.exit(0)
