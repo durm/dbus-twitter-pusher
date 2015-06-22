@@ -9,8 +9,18 @@ import sys
 bus = dbus.SessionBus()
 provider = bus.get_object(BUSNAME, OBJNAME)
 
+def valid_status(status):
+    if len(status) > 140:
+        print("-- Error: Status length is more than 140 symbols.")
+        return False
+    return True
+
 def updateStatus(status):
-    provider.updateStatus(status, dbus_interface = BUSNAME)
+    if valid_status(status):
+        try:    
+            provider.updateStatus(status, dbus_interface = BUSNAME)
+        except Exception as e:
+            print("-- Error:", str(e))
 
 def usage():
     print("Use it like this:")
