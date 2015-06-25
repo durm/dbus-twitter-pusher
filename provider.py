@@ -8,6 +8,7 @@ from dbus.mainloop.glib import DBusGMainLoop
 import tweepy
 from macroses import BUSNAME, OBJNAME
 import sys
+from datetime import datetime
 
 class TwitterPoster(dbus.service.Object):
     def __init__(self, consumer_key, consumer_secret, access_token_key,
@@ -22,13 +23,19 @@ access_token_secret):
     def updateStatus(self, status):
         try:
             self.api.update_status(status=status)
-            print("updateStatus>", status)
+            log(status)
         except Exception as e:
-            print("-- Error", str(e))
+            error(str(e))
 
 def usage():
-    print("Use it like this:")
-    print("{0} CONSUMER_KEY CONSUMER_SECRET ACCESS_TOKEN_KEY ACCESS_TOKEN_SECRET".format(sys.argv[0]))
+    print "Use it like this:"
+    print "{0} CONSUMER_KEY CONSUMER_SECRET ACCESS_TOKEN_KEY ACCESS_TOKEN_SECRET".format(sys.argv[0])
+
+def log(t):
+    print datetime.now(), "  --  ", t
+
+def error(t):
+    log("Error: " + t)
 
 def valid_args(args):
     return len(sys.argv) >= 5
@@ -47,10 +54,10 @@ if __name__ == "__main__":
         call_and_exit(usage, result=1)
     twitter_poster = TwitterPoster(*sys.argv[1:])
     try:
-        print(">>> TwitterPoster started...")
+        print ">>> TwitterPoster started..."
         mainloop.run()
     except KeyboardInterrupt:
-        print("\n>>> TwitterPoster stoped!")
+        print "\n>>> TwitterPoster stoped!"
         sys.exit(0)
     except Exception as e:
-        print("-- Error:", str(e)) 
+        print "-- Error:", str(e)

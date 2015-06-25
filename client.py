@@ -26,14 +26,22 @@ def usage():
     print("Use it like this:")
     print("{0} {1}".format(sys.argv[0], "\"status\""))
 
+def inputAndUpdate():
+    status = raw_input("updateStatus> ")
+    if status :
+        updateStatus(status)
+
+def mainloop():
+    while True:
+        inputAndUpdate()
+
 if __name__ == "__main__":
-    status = None
-    try:
-        status = sys.argv[1]
-    except:
-        usage()
-        sys.exit(1)
-    updateStatus(status)
-    
+    if len(sys.argv) == 1 :
+        try:
+            mainloop()   
+        except KeyboardInterrupt:
+            sys.exit(0)
+    else:
+        updateStatus(sys.argv[1])
 
     
