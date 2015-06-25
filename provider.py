@@ -9,10 +9,10 @@ import tweepy
 from macroses import BUSNAME, OBJNAME
 import sys
 from datetime import datetime
+import json
 
 class TwitterPoster(dbus.service.Object):
-    def __init__(self, consumer_key, consumer_secret, access_token_key,
-access_token_secret):
+    def __init__(self, consumer_key, consumer_secret, access_token_key, access_token_secret):
         busName = dbus.service.BusName(BUSNAME, bus = dbus.SessionBus())
         dbus.service.Object.__init__(self, busName, OBJNAME)
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)

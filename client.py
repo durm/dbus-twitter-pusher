@@ -5,13 +5,15 @@
 from macroses import BUSNAME, OBJNAME 
 import dbus
 import sys
+import readline
 
 bus = dbus.SessionBus()
 provider = bus.get_object(BUSNAME, OBJNAME)
+tweets = []
 
 def valid_status(status):
     if len(status) > 140:
-        print("-- Error: Status length is more than 140 symbols.")
+        print("-- Error: Status length ({0}) is more than 140 symbols.".format(str(len(status))))
         return False
     return True
 
@@ -36,6 +38,7 @@ def mainloop():
         inputAndUpdate()
 
 if __name__ == "__main__":
+    timeline()
     if len(sys.argv) == 1 :
         try:
             mainloop()   
